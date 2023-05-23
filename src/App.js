@@ -1,32 +1,25 @@
-import React from "react";
-import "./App.css";
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
-import Apple from "./Components/Apple";
-import HomePage from "./Components/HomePage";
-import NotFound from "./Components/NotFound";
-import Demo from "./Components/Demo";
-import logo from "./Components/assest/img1.png"
+import './App.css';
+import { HomePage } from './Components/HomePage';
+import { Route, Routes, Link, BrowserRouter } from 'react-router-dom';
+import { Apple } from './Components/Apple';
+import { NotFound } from './Components/NotFound';
 
-const App = () => (
+const App = () => {
+  return (
   <BrowserRouter>
-  <img src ={logo} className="logo" alt="" width={100} height={100}/>
-  <Apple/>
-    <div>
-      <Link to="/">
-        Home
-      </Link>
-      <Link to="/apple">
-        Apple
-      </Link>
-    </div>
-
-    <Routes>
-      <Route Path="/" element={<HomePage />}></Route>
-      <Route Path="/apple" element={<Apple />}></Route>
-    </Routes>
-    <NotFound />
-    <Demo/>
+      <div>
+        <Link to="/" style={{marginleft: 5,}}> Home </Link>
+        <Link to="/apple" style={{marginleft: 15,}}> Apple </Link>
+        <Link to="/applet" style={{marginleft: 30,}}> Applet </Link>
+      </div>
+      <Routes>
+        <Route path='/' element={<HomePage />}></Route>
+        <Route path='/apple' element={<Apple />}></Route>
+        <Route path='*' element={<NotFound />}></Route>
+      </Routes>
+        
   </BrowserRouter>
-);
+  );
+}
 
 export default App;
