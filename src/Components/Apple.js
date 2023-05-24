@@ -1,21 +1,43 @@
 import { Avatar, Button, Popover, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { useEffect, useState } from "react";
+// import LogoutIcon from "@mui/icons-material/Logout";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 export const Apple = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
   const [anchorE1, setAnchorE1] = useState(null);
 
   const Navigate = useNavigate();
 
-  const onHomebtnClick = () => {
-    console.log("Button Clicked");
-    console.log("Name: ", name);
-    console.log("Email: ", email);
-    Navigate("/");
+  // const onHomebtnClick = () => {
+  //   console.log("Button Clicked");
+  //   console.log("Name: ", name);
+  //   console.log("Email: ", email);
+  //   Navigate("/");
+  // };
+
+  useEffect(() => {}, []);
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().min(
+      3,
+      "Please make sure you have entered you name with atleast 3 char."
+    ),
+    email: Yup.string().email("Please enter a valid email address"),
+  });
+
+  const initialValues = {
+    name: "",
+    email: "",
+  };
+
+  const onFormSubmit = (values) => {
+    console.log("On the form submitted", values);
+    alert("Form Submmited");
   };
 
   const handleClick = (event) => {
@@ -38,10 +60,18 @@ export const Apple = () => {
           justifyContent: "flex-end",
           cursor: "pointer",
         }}
-        onClick={handleClick}
       >
-        <Avatar sx={{ bgcolor: "blue" }}>NM</Avatar>
-        <span>Neel Modi</span>
+        <div
+          onClick={handleClick}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            columnGap: 5,
+          }}
+        >
+          <Avatar sx={{ bgcolor: "blue" }}>NM</Avatar>
+        </div>
       </div>
 
       <div
@@ -52,27 +82,94 @@ export const Apple = () => {
           rowGap: 8,
         }}
       >
-        <TextField
-          variant="outlined"
-          type="text"
-          value={name}
-          placeholder="Name"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <TextField
-          variant="outlined"
-          type="email"
-          value={email}
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onFormSubmit}
+        >
+          {({
+            value,
+            errors,
+            touched,
+            isSubmitting,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 5,
+                }}
+              >
+                <TextField
+                  variant="outlined"
+                  type="text"
+                  label="Name"
+                  id="name"
+                  placeholder="Name"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {touched.name && (
+                  <span
+                    style={{
+                      padding: 5,
+                      color: "red",
+                      fontSize: 16,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {errors.name}
+                  </span>
+                )}
+              </div>
 
-        <Button variant="contained" onClick={onHomebtnClick}>
-          Submit
-        </Button>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 5,
+                }}
+              >
+                <TextField
+                  variant="outlined"
+                  type="email"
+                  label="Email"
+                  id="email"
+                  placeholder="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+
+                {touched.email && (
+                  <span
+                    style={{
+                      padding: 5,
+                      color: "red",
+                      fontSize: 16,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {errors.email}
+                  </span>
+                )}
+              </div>
+              <Button variant="contained" type="submit" className="">
+                Submit
+              </Button>
+            </form>
+          )}
+        </Formik>
       </div>
+    </div>
+  );
+};
 
-      <Popover
+{
+  /* <Popover
         open={open}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{
@@ -92,5 +189,5 @@ export const Apple = () => {
         </div>
       </Popover>
     </div>
-  );
-};
+  ); */
+}
