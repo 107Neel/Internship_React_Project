@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 // import LogoutIcon from "@mui/icons-material/Logout";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export const Apple = () => {
   // const [name, setName] = useState("");
   // const [email, setEmail] = useState("");
   const [open, setOpen] = useState(false);
   const [anchorE1, setAnchorE1] = useState(null);
+  const [user, setUser] = useState();
 
   const Navigate = useNavigate();
 
@@ -20,7 +23,13 @@ export const Apple = () => {
   //   Navigate("/");
   // };
 
-  useEffect(() => {}, []);
+  useEffect(() => {axios.get("https://jsonplaceholder.typicode.com/posts").then((res)=> {
+    console.log("user detail: ", res.data);
+    setUser(res.data);
+  });
+}, []);
+
+  
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().min(
@@ -37,8 +46,45 @@ export const Apple = () => {
 
   const onFormSubmit = (values) => {
     console.log("On the form submitted", values);
-    alert("Form Submmited");
+    // alert("Form Submmited"); 
+
+    const requestData = {
+      userName: values.name,
+      userEmail: values.email,
+    };
+
+    axios.post("https://jsonplaceholder.typicode.com/posts", requestData).then((res)=> {
+      if(res.status===201){
+        console.log(res.data.id);
+        toast.success("API call is completed successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    });
   };
+
+  axios.delete("https://jsonplaceholder.typicode.com/posts/1").then((res)=> {
+      if(res.status===200){
+        console.log(res.data.id);
+        toast.success("Data is deleted successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    });
 
   const handleClick = (event) => {
     console.log(123);

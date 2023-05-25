@@ -3,6 +3,7 @@ import { HomePage } from './Components/HomePage';
 import { Route, Routes, Link, BrowserRouter } from 'react-router-dom';
 import { Apple } from './Components/Apple';
 import { NotFound } from './Components/NotFound';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
